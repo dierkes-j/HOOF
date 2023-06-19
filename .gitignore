@@ -1,3 +1,7 @@
 .idea
 baselines
 mujoco-py-2.0.2.0
+slurm
+hoof/wandb
+hoof/results_NPG
+**/__pycache__/

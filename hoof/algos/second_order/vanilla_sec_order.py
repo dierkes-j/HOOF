@@ -112,7 +112,7 @@ def run_pg(
     '''
 
     wandb.init(
-        project="trpo_tf_baseline",
+        project="hoof_tf_original",
         tags=['trpo_tf_hoof'],
         notes='Original HOOF TRPO baseline with tf1.15 and baselinesv1',
     )
