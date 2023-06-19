@@ -21,6 +21,7 @@ from baselines.common.cg import cg
 from baselines.common.policies import build_policy
 from contextlib import contextmanager
 
+import wandb
 
 def learn_hoof_all(env, env_type, timesteps_per_batch, 
                    total_timesteps, kl_range, gamma_range, lam_range, 
@@ -98,6 +99,12 @@ def run_hoof_all(
     -------
     learnt model
     '''
+
+    wandb.init(
+        project="hoof_tf_original",
+        tags=['hoof_tf_hoof'],
+        notes='Original HOOF adjustment of NPG with tf1.15 and baselinesv1',
+    )
 
     MPI = None
     nworkers = 1
@@ -352,6 +359,11 @@ def run_hoof_all(
         logger.record_tabular("Opt_KL", opt_kl)
         logger.record_tabular("gamma", opt_gamma)
         logger.record_tabular("lam", opt_lam)
+
+        wandb.log({
+            'hpo/gamma': opt_gamma, 'hpo/lam': opt_lam, 'hpo/target_kl': opt_kl,
+            'training/ep_len_mean': np.mean(lenbuffer), 'training/ep_rew_mean': np.mean(rewbuffer)
+        })
 
         if rank==0:
             logger.dump_tabular()
