@@ -22,6 +22,7 @@ from baselines.common.policies import build_policy
 from contextlib import contextmanager
 from baselines.common.models import mlp
 
+import wandb
 
 def learn_npg_variant(algo, env, env_type, timesteps_per_batch, total_timesteps, **network_kwargs):
     params = defaults.mujoco()
@@ -109,6 +110,12 @@ def run_pg(
     learnt model
 
     '''
+
+    wandb.init(
+        project="trpo_tf_baseline",
+        tags=['trpo_tf_hoof'],
+        notes='Original HOOF TRPO baseline with tf1.15 and baselinesv1',
+    )
 
     MPI = None
     nworkers = 1
@@ -355,6 +362,11 @@ def run_pg(
         logger.record_tabular("EpisodesSoFar", episodes_so_far)
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
         logger.record_tabular("TimeElapsed", time.time() - tstart)
+
+        wandb.log({
+            'hpo/gamma': gamma, 'hpo/lam': lam, 'hpo/target_kl': max_kl,
+            'training/ep_len_mean': np.mean(lenbuffer), 'training/ep_rew_mean': np.mean(rewbuffer)
+        })
 
         if rank==0:
             logger.dump_tabular()
