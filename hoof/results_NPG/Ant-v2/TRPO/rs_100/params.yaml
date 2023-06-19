@@ -1,0 +1,24 @@
+algo_type: TRPO
+all_n_gl: 50
+all_n_kl: 50
+ant: Ant-v2
+batch_size: 10000
+cheetah: HalfCheetah-v2
+discount_bound:
+- 0.85
+- 1
+ent_ub: 0.2
+hopper: Hopper-v2
+kl_bound:
+- 0.001
+- 0.1
+lambda_bound:
+- 0.85
+- 1
+lr_ub: 0.01
+n_envs: 40
+num_ent_coeff: 50
+num_lr: 100
+rseed: 100
+total_ts: 5000000
+walker: Walker2d-v2
